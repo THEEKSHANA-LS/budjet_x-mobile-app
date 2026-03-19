@@ -1,8 +1,7 @@
-
-
+import 'package:budjet_x/screens/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 
-void main(){
+void main() {
   runApp(const MyApp());
 }
 
@@ -14,18 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Budjet_x",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: "Inter",
-      ),
-      home: const Scaffold(
-        body: Center(
-          child: Text("Hello Flutter", style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-         ),
-        ),
-      ),
+      theme: ThemeData(fontFamily: "Inter"),
+      home: OnboardingScreen(),
     );
   }
 }
