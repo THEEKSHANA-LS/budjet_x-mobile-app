@@ -1,5 +1,7 @@
 import 'package:budjet_x/constants/colors.dart';
 import 'package:budjet_x/constants/constants.dart';
+import 'package:budjet_x/screens/main_screen.dart';
+import 'package:budjet_x/services/user_services.dart';
 import 'package:budjet_x/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
@@ -167,7 +169,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                       ),
                       //submit button...
                       GestureDetector(
-                        onTap: (){
+                        onTap: () async{
                           if(_formKey.currentState!.validate()){
                             //form is valid, process data...
                             String userName = _userNameController.text;
@@ -175,7 +177,19 @@ class _UserDataScreenState extends State<UserDataScreen> {
                             String password = _passwordController.text;
                             String confirmPassword = _confirmPasswordController.text;
 
-                            print("$userName $email $password $confirmPassword");
+                            //save the user name and email in the device storage using shared prferences...
+                            await UserServices.storeUserDetails(
+                               userName: userName,
+                               email: email,
+                               password: password,
+                               confirmPassword: confirmPassword,
+                               context: context,
+                            );
+
+                            //navigate to main screen...
+                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                              return const MainScreen();
+                            }));
                           }
                         },
                         child: CustomButton(
