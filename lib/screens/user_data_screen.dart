@@ -13,7 +13,6 @@ class UserDataScreen extends StatefulWidget {
 }
 
 class _UserDataScreenState extends State<UserDataScreen> {
- 
   //for the check box...
   bool _rememberMe = false;
 
@@ -24,7 +23,8 @@ class _UserDataScreenState extends State<UserDataScreen> {
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -63,7 +63,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                         controller: _userNameController,
                         validator: (value) {
                           //check weather the user entered a valid name...
-                          if(value!.isEmpty){
+                          if (value!.isEmpty) {
                             return "Please Enter Your Name";
                           }
                         },
@@ -82,7 +82,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                         controller: _emailController,
                         validator: (value) {
                           //check weather the user entered a valid name...
-                          if(value!.isEmpty){
+                          if (value!.isEmpty) {
                             return "Please Enter Your Email";
                           }
                         },
@@ -101,7 +101,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                         controller: _passwordController,
                         validator: (value) {
                           //check weather the user entered a valid name...
-                          if(value!.isEmpty){
+                          if (value!.isEmpty) {
                             return "Please Enter a Valid Password";
                           }
                         },
@@ -122,7 +122,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                         controller: _confirmPasswordController,
                         validator: (value) {
                           //check weather the user entered a valid name...
-                          if(value!.isEmpty){
+                          if (value!.isEmpty) {
                             return "Please Enter a Same Password";
                           }
                         },
@@ -164,37 +164,41 @@ class _UserDataScreenState extends State<UserDataScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 30
-                      ),
+                      const SizedBox(height: 30),
                       //submit button...
                       GestureDetector(
-                        onTap: () async{
-                          if(_formKey.currentState!.validate()){
+                        onTap: () async {
+                          if (_formKey.currentState!.validate()) {
                             //form is valid, process data...
                             String userName = _userNameController.text;
                             String email = _emailController.text;
                             String password = _passwordController.text;
-                            String confirmPassword = _confirmPasswordController.text;
+                            String confirmPassword =
+                                _confirmPasswordController.text;
 
                             //save the user name and email in the device storage using shared prferences...
                             await UserServices.storeUserDetails(
-                               userName: userName,
-                               email: email,
-                               password: password,
-                               confirmPassword: confirmPassword,
-                               context: context,
+                              userName: userName,
+                              email: email,
+                              password: password,
+                              confirmPassword: confirmPassword,
+                              context: context,
                             );
 
                             //navigate to main screen...
-                            Navigator.push(context, MaterialPageRoute(builder: (context){
-                              return const MainScreen();
-                            }));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const MainScreen();
+                                },
+                              ),
+                            );
                           }
                         },
                         child: CustomButton(
-                          buttonName: "Next", 
-                          buttonColor: kMainColor
+                          buttonName: "Next",
+                          buttonColor: kMainColor,
                         ),
                       ),
                     ],
