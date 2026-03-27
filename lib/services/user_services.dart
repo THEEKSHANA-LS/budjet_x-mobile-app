@@ -39,11 +39,25 @@ class UserServices {
     }
   }
 
+
+
   //method to check weather the username is saved in the shared preferences...
+
   static Future<bool> checkUsername() async {
     //create an instance for shared preference...
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userName = prefs.getString('username');
     return userName != null;
+  }
+
+
+  //method to get username and email from shared preferences to home screen...
+  static Future<Map <String, String>> getUserData () async{
+    //create an instance for shared preferences...
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? userName = pref.getString("username");
+    String? email = pref.getString("email");
+
+    return { "username" : userName! , "email" :  email! };
   }
 }
