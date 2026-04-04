@@ -1,10 +1,12 @@
 import 'package:budjet_x/models/expense_model.dart';
 import 'package:budjet_x/models/income_model.dart';
+import 'package:budjet_x/widgets/custom_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:budjet_x/constants/colors.dart';
 import 'package:budjet_x/constants/constants.dart';
+import 'package:intl/intl.dart';
 
 class AddNewScreen extends StatefulWidget {
   const AddNewScreen({super.key});
@@ -23,6 +25,9 @@ class _AddNewScreenState extends State<AddNewScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
+
+  DateTime _selectedDate = DateTime.now();
+  DateTime _selectedTime = DateTime.now();
 
   //dispose for remove garbage values...
   @override
@@ -197,21 +202,25 @@ class _AddNewScreenState extends State<AddNewScreen> {
                                     child: Text(category.name),
                                   );
                                 }).toList(),
-                                value: _selectedMethod == 0 ? _expenseCategory : _incomeCategory,
+                          value: _selectedMethod == 0
+                              ? _expenseCategory
+                              : _incomeCategory,
                           onChanged: (value) {
                             setState(() {
                               _selectedMethod == 0
                                   ? _expenseCategory = value as ExpenseCategory
                                   : _incomeCategory = value as IncomeCategory;
 
-                                  print(_selectedMethod == 0 ? _expenseCategory.name : _incomeCategory.name); 
+                              print(
+                                _selectedMethod == 0
+                                    ? _expenseCategory.name
+                                    : _incomeCategory.name,
+                              );
                             });
                           },
                         ),
 
-                        SizedBox(
-                          height: 20,
-                        ),
+                        SizedBox(height: 20),
 
                         //title field...
                         TextFormField(
@@ -224,13 +233,11 @@ class _AddNewScreenState extends State<AddNewScreen> {
                             contentPadding: const EdgeInsets.symmetric(
                               vertical: kDefaultPadding,
                               horizontal: 20,
-                            ),            
+                            ),
                           ),
                         ),
 
-                        SizedBox(
-                          height: 20,
-                        ),
+                        SizedBox(height: 20),
 
                         //description field...
                         TextFormField(
@@ -243,13 +250,11 @@ class _AddNewScreenState extends State<AddNewScreen> {
                             contentPadding: const EdgeInsets.symmetric(
                               vertical: kDefaultPadding,
                               horizontal: 20,
-                            ),            
+                            ),
                           ),
                         ),
 
-                        SizedBox(
-                          height: 20,
-                        ),
+                        SizedBox(height: 20),
 
                         //amount field...
                         TextFormField(
@@ -263,9 +268,148 @@ class _AddNewScreenState extends State<AddNewScreen> {
                             contentPadding: const EdgeInsets.symmetric(
                               vertical: kDefaultPadding,
                               horizontal: 20,
-                            ),            
+                            ),
                           ),
-                        )
+                        ),
+
+                        SizedBox(height: 20),
+
+                        //Date Picker...
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                showDatePicker(
+                                  context: context,
+                                  firstDate: DateTime(2020),
+                                  lastDate: DateTime(2027),
+                                  initialDate: DateTime.now(),
+                                ).then((value) {
+                                  if (value != null) {
+                                    setState(() {
+                                      _selectedDate = value;
+                                    });
+                                  }
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: kMainColor,
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 15,
+                                    vertical: 10,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.calendar_month_outlined,
+                                        color: kWhite,
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        "Select Date",
+                                        style: TextStyle(
+                                          color: kWhite,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              DateFormat.yMMMd().format(_selectedDate),
+                              style: const TextStyle(
+                                color: kGrey,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: 20),
+
+                        //Time Picker...
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                showTimePicker(
+                                  context: context,
+                                  initialTime: TimeOfDay.now(),
+                                ).then((value) {
+                                  if (value != null) {
+                                    setState(() {
+                                      _selectedTime = DateTime(
+                                        _selectedDate.year,
+                                        _selectedDate.month,
+                                        _selectedDate.day,
+                                        value.hour,
+                                        value.minute,
+                                      );
+                                    });
+                                  }
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: kYellow,
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 15,
+                                    vertical: 10,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.access_time_outlined,
+                                        color: kWhite,
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        "Select Time",
+                                        style: TextStyle(
+                                          color: kWhite,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              DateFormat.jm().format(_selectedTime),
+                              style: const TextStyle(
+                                color: kGrey,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: 20),
+
+                        const Divider(
+                          color: kLightGrey,
+                          thickness: 5,
+                        ), 
+
+                        SizedBox(height: 20),
+
+                        CustomButton(buttonName: "Add", buttonColor: _selectedMethod == 0 ? kRed : kGreen)
                       ],
                     ),
                   ),
