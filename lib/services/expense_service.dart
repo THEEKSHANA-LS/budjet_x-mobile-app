@@ -11,7 +11,7 @@ class ExpenseService {
   //Define the key for storing expense in shared preferences...
   static const String _expenseKey = 'expenses';
 
-  //Save the expense to shared preferences...
+  //Save the expense to shared preferences...(Function 1)
   Future<void> saveExpense(Expense expense, BuildContext context) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -59,7 +59,7 @@ class ExpenseService {
     }
   }
 
-  //Load the expences from shared preferneces...
+  //Load the expences from shared preferneces...(Function 2)
   Future<List<Expense>> loadExpenses() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     List<String>? existingExpenses = pref.getStringList(_expenseKey);

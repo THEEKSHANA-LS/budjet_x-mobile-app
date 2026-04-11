@@ -1,11 +1,13 @@
 import 'package:budjet_x/constants/colors.dart';
 import 'package:budjet_x/models/expense_model.dart';
+import 'package:budjet_x/models/income_model.dart';
 import 'package:budjet_x/screens/add_new_screen.dart';
 import 'package:budjet_x/screens/budget_screen.dart';
 import 'package:budjet_x/screens/home_screen.dart';
 import 'package:budjet_x/screens/profile_screen.dart';
 import 'package:budjet_x/screens/transactions_screen.dart';
 import 'package:budjet_x/services/expense_service.dart';
+import 'package:budjet_x/services/income_service.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
@@ -21,12 +23,21 @@ class _MainScreenState extends State<MainScreen> {
   int _currentPageIndex = 0;
 
   List<Expense> expenseList = [];
+  List<Income> incomeList = [];
 
   //Function to fetch expenses...
   void fetchAllExpenses() async{
     List<Expense> loadedExpenses = await ExpenseService().loadExpenses();
     setState(() {
       expenseList = loadedExpenses;
+    });
+  }
+
+  //Function to fetch incomes...
+  void fetchAllIncomes() async{
+    List<Income> loadedIncomes = await IncomeService().loadIncomes();
+    setState(() {
+      incomeList = loadedIncomes;
     });
   }
 
@@ -37,7 +48,16 @@ class _MainScreenState extends State<MainScreen> {
     //update the list of expenses...
     setState(() {
       expenseList.add(newExpense);
-      print(expenseList.length);
+    });
+  }
+
+  //Function to add new income...
+  void addNewIncome(Income newIncome) {
+    IncomeService().saveIncome(newIncome, context);
+
+    //update the list of incomes...
+    setState(() {
+      incomeList.add(newIncome);
     });
   }
 
@@ -46,6 +66,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     setState(() {
       fetchAllExpenses();
+      fetchAllIncomes();
     });
   }
 
@@ -59,6 +80,7 @@ class _MainScreenState extends State<MainScreen> {
       TransactionsScreen(),
       AddNewScreen(
         addExpense: addNewExpenses,
+        addIncome: addNewIncome,
       ),
       BudgetScreen(),
       ProfileScreen(),
@@ -74,7 +96,6 @@ class _MainScreenState extends State<MainScreen> {
         onTap: (index) {
           setState(() {
             _currentPageIndex = index;
-            print(_currentPageIndex);
           });
         },
         selectedLabelStyle: const TextStyle(
