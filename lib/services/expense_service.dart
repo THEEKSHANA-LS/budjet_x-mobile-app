@@ -81,7 +81,7 @@ class ExpenseService {
       SharedPreferences pref = await SharedPreferences.getInstance();
       List<String>? existingExpenses = pref.getStringList(_expenseKey);
 
-      //Convert the exising expenses to a list of Expense objects...
+      //Convert the existing expenses to a list of Expense objects...
       List<Expense> existingExpenseObjects = [];
       if (existingExpenses != null) {
         existingExpenses.map((e) => Expense.fromJSON(json.decode(e))).toList();

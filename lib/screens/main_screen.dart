@@ -69,6 +69,14 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  //Function to delete an income...
+  void deleteIncome(Income income) {
+    IncomeService().deleteIncome(income.id, context);
+    setState(() {
+      incomeList.remove(income);
+    });
+  }
+
   @override
   void initState(){
     super.initState();
@@ -83,12 +91,13 @@ class _MainScreenState extends State<MainScreen> {
 
     //screen list...
     final List<Widget> pages = [
-      
+      HomeScreen(),
       TransactionsScreen(
         expensesList: expenseList,
+        incomesList : incomeList,
         onDismissedExpense: deleteExpense,
+        onDismissedIncome: deleteIncome,
       ),
-      HomeScreen(),
       AddNewScreen(
         addExpense: addNewExpenses,
         addIncome: addNewIncome,
